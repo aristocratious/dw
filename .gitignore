@@ -14,6 +14,7 @@ exports/
 full/
 live_product_list/
 local_product_list/
+_old/
 
 # Distribution / packaging
 .Python
