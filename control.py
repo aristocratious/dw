@@ -5,7 +5,7 @@ from __future__ import print_function
 import csv, re, os, sys, httplib2, glob, datetime
 # from makeVariants import *
 # from compare import *
-from get_xlsx import *
+#from get_xlsx import *
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
@@ -110,7 +110,7 @@ indices = {
 
 
 
-FILE_ID = "1KqjcT3H3tF73taZX4GEAw6NHvoyFeXps"
+FILE_ID = "1g8HA8dGM9d4OMTg5jGEmOALFled5yj8c"
 #LOCAL_FILE_NAME = "local_product_list/product_list.xlsx"
 LIVE_FILE_NAME = "live_product_list/live_product_list.xlsx"
 FIRST_SHEET = "Sheet1"
@@ -149,13 +149,12 @@ def get_XLSX_as_list(xfile, test=False, xsheet=FIRST_SHEET):
     wb = load_workbook(filename=xfile, read_only=True)
     ws = wb[xsheet]
     big_list = []
-
-    if test:
-        for row in ws.rows: #set it to just a snippet of the full file
-            big_list.append([str(cell.value) for cell in row])
-    else:
-        for row in ws.rows: #use the whole file
-            big_list.append([str(cell.value) for cell in row])
+    index = 0
+    for row in ws.rows: #use the whole file, without headers
+        if index < 5:
+            index+=1
+            continue
+        big_list.append([str(cell.value) for cell in row])
     return cleanseList(big_list)
 
 
@@ -361,7 +360,7 @@ def export_row_to_CSV(row, selected_website, first_of_product=False):
     SKU = row[indices["Variant SKU"]]
     title = str(row[indices["Series"]])+" ("+str(row[indices["Color"]])+")"
     tags = row[indices[selected_website+"Tags"]]
-    handle = str(str(row[indices["Series"]])+str(row[indices["State+Unique"]])).lower().replace(", ","-").replace(" ","-")
+    handle = row[indices[selected_website+"Handle"]]
     series = row[indices["Series"]]
     vtype = row[indices["Type/Option"]]
     vsize = row[indices["Size"]]
@@ -417,9 +416,6 @@ def getLiveFile():
     append = ""
 
     getGoogleDriveFile()
-    if selected_website == None:
-        setSelectedWebsite()
-
 
 
 
