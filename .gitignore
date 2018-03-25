@@ -9,6 +9,11 @@ settings.py
 *.so
 client_secret.json
 client_secrets.json
+changes/
+exports/
+full/
+live_product_list/
+local_product_list/
 
 # Distribution / packaging
 .Python
